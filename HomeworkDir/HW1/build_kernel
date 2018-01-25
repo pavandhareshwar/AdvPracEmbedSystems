@@ -1,3 +1,11 @@
+###############################################################################
+# filename: 	build_kernel 
+# author:      	Pavan Dhareshwar
+
+# Description: 	This is a simple script that setups the build environment, 
+#              	downloads, compiles and installs the kernel image.
+###############################################################################
+
 # The following is the steps one would typically perform whilst
 # building a new version of the kernel and setting up a new 
 # development enviroment

@@ -2,9 +2,11 @@
 
 ###############################################################################
 # filename: 	collectSystemInfo.sh 
+# author:       Pavan Dhareshwar
+
 # Description: 	This is a simple script that can be used to collect some 
-#				of the important parts of the operating system. The information 
-#				collected is written to a file named systemInfo.txt. 
+#		        of the important parts of the operating system. The information 
+#		        collected is written to a file named systemInfo.txt. 
 
 # The items included as part of the output file are:
 #	1. User information
