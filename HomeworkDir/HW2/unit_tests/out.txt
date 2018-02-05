@@ -1,0 +1,2 @@
+cc -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include -o test-dll.out test_DLL.c libutils.a 3rd-party/build-Debug/lib/libcmocka.a -lm
+Makefile:82: recipe for target 'test-dll.out' failed

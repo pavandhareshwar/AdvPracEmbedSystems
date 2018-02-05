@@ -1,0 +1,9 @@
+/home/pavan/APES/HWs/HW2/cmocka_unit_test/ecen5813/tutorials/unit_tests/3rd-party/build-Debug/lib/pkgconfig/cmocka.pc
+/home/pavan/APES/HWs/HW2/cmocka_unit_test/ecen5813/tutorials/unit_tests/3rd-party/build-Debug/lib/cmake/cmocka/cmocka-config.cmake
+/home/pavan/APES/HWs/HW2/cmocka_unit_test/ecen5813/tutorials/unit_tests/3rd-party/build-Debug/lib/cmake/cmocka/cmocka-config-version.cmake
+/home/pavan/APES/HWs/HW2/cmocka_unit_test/ecen5813/tutorials/unit_tests/3rd-party/build-Debug/include/cmocka.h
+/home/pavan/APES/HWs/HW2/cmocka_unit_test/ecen5813/tutorials/unit_tests/3rd-party/build-Debug/include/cmocka_pbc.h
+/home/pavan/APES/HWs/HW2/cmocka_unit_test/ecen5813/tutorials/unit_tests/3rd-party/build-Debug/lib/libcmocka.so.0.4.0
+/home/pavan/APES/HWs/HW2/cmocka_unit_test/ecen5813/tutorials/unit_tests/3rd-party/build-Debug/lib/libcmocka.so.0
+/home/pavan/APES/HWs/HW2/cmocka_unit_test/ecen5813/tutorials/unit_tests/3rd-party/build-Debug/lib/libcmocka.so
+/home/pavan/APES/HWs/HW2/cmocka_unit_test/ecen5813/tutorials/unit_tests/3rd-party/build-Debug/lib/libcmocka.a

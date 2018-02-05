@@ -1,0 +1,6 @@
+Name: cmocka
+Description: The cmocka unit testing library
+Version: 1.1.0
+Libs: -L/home/pavan/APES/HWs/HW2/cmocka_unit_test/ecen5813/tutorials/unit_tests/3rd-party/build-Debug/lib -lcmocka
+Cflags: -I/home/pavan/APES/HWs/HW2/cmocka_unit_test/ecen5813/tutorials/unit_tests/3rd-party/build-Debug/include
+
