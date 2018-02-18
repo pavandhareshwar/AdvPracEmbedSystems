@@ -1,11 +1,10 @@
 /*************************************************************************
-* Author: Pavan Dhareshwar
-* Date: 2/16/2018
-* File: multiThreading.c
+* Author: 		Pavan Dhareshwar
+* Date: 		2/16/2018
+* File: 		multiThreading.c
 * Description:  A simple multithreading program that use some share data 
                 between multiple threads.
 *************************************************************************/
-
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -148,7 +147,11 @@ void *mt_func(void *arg)
     pthread_join(t_child_1_id, NULL);
     pthread_join(t_child_2_id, NULL);
 	
-	sprintf(buffer, "[Master] Thread exit\n");
+	/* 	Time when the thread started */
+	start_time = time(NULL);
+	time_str = ctime(&start_time);
+
+	sprintf(buffer, "[Master] Thread exit at %s\n", time_str);
 	write_to_log_file(buffer, strlen(buffer), fp_master);
     
 	fclose(fp_master);

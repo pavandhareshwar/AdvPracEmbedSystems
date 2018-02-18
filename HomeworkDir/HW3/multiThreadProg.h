@@ -1,7 +1,7 @@
 /*************************************************************************
-* Author: Pavan Dhareshwar
-* Date: 2/16/2018
-* File: multiThreading.h
+* Author: 		Pavan Dhareshwar
+* Date: 		2/16/2018
+* File: 		multiThreading.h
 * Description:  Header file containing the macros, structs/enums, globals
                 and function prototypes for source file multiThreading.c
 *************************************************************************/
