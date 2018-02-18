@@ -1,3 +1,12 @@
+/*************************************************************************
+* Author: Pavan Dhareshwar
+* Date: 2/16/2018
+* File: multiThreading.c
+* Description:  A simple multithreading program that use some share data 
+                between multiple threads.
+*************************************************************************/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
