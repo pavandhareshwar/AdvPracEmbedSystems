@@ -1,3 +1,12 @@
+/*****************************************************************
+* Author: Pavan Dhareshwar
+* Date: 3/6/2018
+* File: process_tree_lineage.c
+* Description: This source file creates and defines the functionality
+*              of what the kernel module was supposed to do, but in 
+*              user space. 
+******************************************************************/
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
