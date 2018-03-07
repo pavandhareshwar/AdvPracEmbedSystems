@@ -1,0 +1,1 @@
+cmd_/home/pavan/APES/HWs/HW4/P2/process_tree_lineage.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/pavan/APES/HWs/HW4/P2/process_tree_lineage.ko /home/pavan/APES/HWs/HW4/P2/process_tree_lineage.o /home/pavan/APES/HWs/HW4/P2/process_tree_lineage.mod.o ;  true
