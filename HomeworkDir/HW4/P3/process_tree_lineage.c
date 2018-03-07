@@ -1,3 +1,16 @@
+/*****************************************************************
+* Author: Pavan Dhareshwar
+* Date: 3/6/2018
+* File: process_tree_lineage.c
+* Description: This source file creates and defines the functionality
+*              of a kernel module that evaluates the lineage of a
+*              given process (as PID using module params) or current
+*              process (if PID is invalid). It also computes and 
+*              prints some of the metrics of the process as we 
+*              traverse back to find all the parent processes of the
+*              process.
+******************************************************************/
+
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
@@ -16,6 +29,8 @@ MODULE_INFO(vermagic, "4.14.15 SMP mod_unload ");
 
 #define THREAD_NAME_LEN		50
 
+/* Default value set to invalid. If no module parameter passed, then
+** the lineage of the current process is evaluated */
 int proc_id = -1;
 /* Module Parameter */
 module_param(proc_id, int, S_IRUGO);

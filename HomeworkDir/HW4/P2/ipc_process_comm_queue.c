@@ -1,3 +1,13 @@
+/*****************************************************************
+* Author: Pavan Dhareshwar
+* Date: 3/6/2018
+* File: ipc_process_comm_queue.c
+* Description: This source file implements the IPC communication 
+*              mechanism between a parent and a child process 
+*              created using fork system call using queues.
+******************************************************************/
+
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -57,8 +67,9 @@ int main(void)
 		
 		struct ipc_msg_struct sender_msg;
 	
-		strcpy(sender_msg.msg.message, "IPC communication using queues");
-		sender_msg.msg.msg_len = strlen("IPC communication using queues");
+        char msg[] = "IPC communication using queues";
+		strcpy(sender_msg.msg.message, msg);
+		sender_msg.msg.msg_len = strlen(msg);
 		sender_msg.usr_led_ctrl = LED_OFF;
 
 		int num_sent_bytes = mq_send(msg_queue, (char *)&sender_msg,
@@ -87,9 +98,11 @@ int main(void)
 		}
 
 		struct ipc_msg_struct sender_msg;
-		
-		strcpy(sender_msg.msg.message, "IPC communication using queues");
-		sender_msg.msg.msg_len = strlen("IPC communication using queues");
+	
+        char msg[] = "IPC communication using queues";
+		strcpy(sender_msg.msg.message, msg);
+		sender_msg.msg.msg_len = strlen(msg);
+
 		sender_msg.usr_led_ctrl = LED_ON;
 
 		int num_sent_bytes = mq_send(msg_queue, (char *)&sender_msg,

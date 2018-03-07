@@ -1,3 +1,13 @@
+/*****************************************************************
+* Author: Pavan Dhareshwar
+* Date: 3/6/2018
+* File: ipc_process_comm_pipe.c
+* Description: This source file implements the IPC communication 
+*              mechanism between a parent and a child process 
+*              created using fork system call using pipes.
+******************************************************************/
+
+
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>

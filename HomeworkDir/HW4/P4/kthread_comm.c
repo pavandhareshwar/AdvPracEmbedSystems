@@ -1,3 +1,16 @@
+/*****************************************************************
+* Author: Pavan Dhareshwar
+* Date: 3/6/2018
+* File: process_tree_lineage.c
+* Description: This source file creates and defines the functionality
+*              of a kernel module that creates two kernel threads 
+*              and establishes communication between them using 
+*              kfifo. One thread collects information related to 
+*              currently scheduled processes in the rbtree and 
+*              sends it to the second thread via kfifo, which logs
+*              it to the kernel logger. 
+******************************************************************/
+
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/delay.h>

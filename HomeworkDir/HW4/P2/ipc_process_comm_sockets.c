@@ -1,3 +1,12 @@
+/*****************************************************************
+* Author: Pavan Dhareshwar
+* Date: 3/6/2018
+* File: ipc_process_comm_socket.c
+* Description: This source file implements the IPC communication 
+*              mechanism between a parent and a child process 
+*              created using fork system call using sockets.
+******************************************************************/
+
 #include <stdio.h>
 #include <sys/socket.h>
 #include <stdlib.h>
@@ -11,7 +20,6 @@
 #define SERVER_PORT_NUM 			8080
 #define SERVER_LISTEN_QUEUE_SIZE	5
 
-#define IPC_MSG_SIZE        256
 #define BUFF_SIZE			1024
 
 int main(void)

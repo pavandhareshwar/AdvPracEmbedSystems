@@ -1,3 +1,13 @@
+/*****************************************************************
+* Author: Pavan Dhareshwar
+* Date: 3/6/2018
+* File: ipc_process_comm_queue_sysV.c
+* Description: This source file implements the IPC communication 
+*              mechanism between a parent and a child process 
+*              created using fork system call using sysV queuing
+*              mechanism.
+******************************************************************/
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
