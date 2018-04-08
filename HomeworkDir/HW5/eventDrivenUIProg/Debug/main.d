@@ -21,7 +21,6 @@ main.obj: /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/
 main.obj: /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/rom_map.h
 main.obj: /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/pin_map.h
 main.obj: /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/gpio.h
-main.obj: /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/interrupt.h
 main.obj: /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/uart.h
 main.obj: /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/inc/hw_ints.h
 main.obj: /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/inc/hw_memmap.h
@@ -60,7 +59,6 @@ main.obj: /Users/pavandhareshwar/workspace_v8/freeRTOSTest3Tasks/FreeRTOS/includ
 /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/rom_map.h: 
 /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/pin_map.h: 
 /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/gpio.h: 
-/Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/interrupt.h: 
 /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/uart.h: 
 /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/inc/hw_ints.h: 
 /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/inc/hw_memmap.h: 

@@ -30,6 +30,7 @@ main.obj: /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/
 main.obj: /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/rom.h
 main.obj: /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/rom_map.h
 main.obj: /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/uart.h
+main.obj: ../main.h
 
 ../main.c: 
 /Users/pavandhareshwar/CCS/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdio.h: 
@@ -61,3 +62,4 @@ main.obj: /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/
 /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/rom.h: 
 /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/rom_map.h: 
 /Users/pavandhareshwar/Downloads/TivaWare/SW-TM4C-2.1.4.178/driverlib/uart.h: 
+../main.h: 
