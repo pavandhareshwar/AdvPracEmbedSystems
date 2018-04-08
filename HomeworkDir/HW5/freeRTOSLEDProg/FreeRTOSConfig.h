@@ -106,6 +106,8 @@
 #define configUSE_APPLICATION_TASK_TAG  0
 #define configUSE_COUNTING_SEMAPHORES   1
 
+#define configSUPPORT_DYNAMIC_ALLOCATION 1
+
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES           0
 #define configMAX_CO_ROUTINE_PRIORITIES ( 2 )

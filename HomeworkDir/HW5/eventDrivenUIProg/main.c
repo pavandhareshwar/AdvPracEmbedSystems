@@ -28,6 +28,7 @@
 #include "task.h"
 #include "queue.h"
 #include "timers.h"
+#include "semphr.h"
 
 #include "main.h"
 
@@ -35,6 +36,8 @@ TaskHandle_t hdl_toggle_led_event_task, hdl_log_str_event_task, hdl_sig_handler_
 xTimerHandle xLEDEventTaskTimer, xLogStringEventTaskTimer;
 BaseType_t xTimer1Start, xTimer2Start;
 QueueHandle_t xQueue = NULL;
+
+SemaphoreHandle_t xSemaphore = NULL;
 
 int main(void)
 {
@@ -63,6 +66,8 @@ int main(void)
 
     /* ---------------------------------------------------------------------------------------------------------- */
 
+    gui32_led_status = 0;
+
     /* UART initialization */
     UART_Init();
 
@@ -90,21 +95,21 @@ void UART_Init(void)
                             (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
                                     UART_CONFIG_PAR_NONE));
 
-    /* Enable the UART interrupt */
-    ROM_IntEnable(INT_UART0);
-    ROM_UARTIntEnable(UART0_BASE, UART_INT_RX | UART_INT_RT);
+    /* Create a semaphore for UART */
+    xSemaphore = xSemaphoreCreateMutex();
 
-    UARTLoopbackEnable(UART0_BASE);
 }
 
 void createQueueAndTasks(void)
 {
-    //xQueue = xQueueCreate(QUEUE_LEN, sizeof(unsigned long));
+    uint8_t ui8_msg_str[MSG_MAX_LEN];
+    memset((char *) ui8_msg_str, '\0', sizeof(ui8_msg_str));
+
     xQueue = xQueueCreate(QUEUE_LEN, sizeof(struct qmsg));
     if(xQueue != NULL)
     {
-        printf("Queue is created\n");
-        SysCtlDelay(gui32_sys_clock_rate / (1000 * 3));
+        sprintf((char *)ui8_msg_str, "Queue created successfully\r\n");
+        UARTSend(ui8_msg_str, strlen(ui8_msg_str));
 
         createTasks();
 
@@ -112,7 +117,8 @@ void createQueueAndTasks(void)
     }
     else
     {
-        printf("Queue creation failed");
+        sprintf((char *)ui8_msg_str, "Queue creation failed\r\n");
+        UARTSend(ui8_msg_str, strlen(ui8_msg_str));
     }
 }
 
@@ -124,7 +130,8 @@ void createTasks(void)
                 configMINIMAL_STACK_SIZE, /* Task stack size */
                 NULL, /* Parameters */
                 1, /* Priority */
-                &hdl_toggle_led_event_task /* task handle */ );
+                &hdl_toggle_led_event_task /* task handle */
+                );
 
     /* Create the two tasks that will blink the LEDs at different rates */
     xTaskCreate(vLogStringEventProdTask, (const portCHAR *)"LogStringEventProdTask",
@@ -139,50 +146,49 @@ void createTasks(void)
 
 void vLEDEventTaskTimerCbFunc(TimerHandle_t xTimer)
 {
-    while(1)
-    {
-        xTaskNotify(hdl_sig_handler_task, TOGGLE_LED, eSetBits);
-        //SysCtlDelay(gui32_sys_clock_rate / (1000 * 3));
-        vTaskDelay(1000/portTICK_PERIOD_MS); //wait for 1 second
-    }
+    /* Task 1 will signal task3’s TOGGLE_LED event notification here
+     * in the timer callback function */
+    xTaskNotify(hdl_sig_handler_task, TOGGLE_LED, eSetBits);
 }
 
 void vLogStringEventTaskTimerCbFunc(TimerHandle_t xTimer)
 {
-    //unsigned long ul_count = 1;
     struct qmsg msg_to_send;
-    unsigned char uc_message[] = "Hello\n";
+    unsigned char uc_message[MSG_MAX_LEN];
+
+    TickType_t tick_count = xTaskGetTickCount();
+
+    sprintf((char *)uc_message, "Task 2 tick count: %d\r\n", tick_count);
     strcpy(msg_to_send.ui8_message, uc_message);
     msg_to_send.ui32_length = strlen(uc_message);
 
     if (xQueue != NULL)
     {
-        while(1)
-        {
-            xQueueSend(xQueue, (void *)&msg_to_send, (TickType_t) 0);
-            xTaskNotify(hdl_sig_handler_task, LOG_STRING, eSetBits);
-            //SysCtlDelay(gui32_sys_clock_rate / (1000 * 3));
-            vTaskDelay(2000/portTICK_PERIOD_MS); //wait for 2 seconds
-        }
+        xQueueSend(xQueue, (void *)&msg_to_send, (TickType_t) 0);
+
+        xTaskNotify(hdl_sig_handler_task, LOG_STRING, eSetBits);
     }
 }
 
 void vToggleLEDEventProdTask(void * pvParameters)
 {
+    uint8_t ui8_msg_str[MSG_MAX_LEN];
+    memset(ui8_msg_str, '\0', sizeof(ui8_msg_str));
+
     /* -------------------------------------------------------------------------------- */
     /* Configure GPIO to blink user LED D1 at 2Hz rate */
     /* Enable the GPIO port used for user LED 1 */
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPION);
 
     /* Enable the GPIO pins for user LED 1 */
-    ROM_GPIOPinTypeGPIOOutput(GPIO_PORTN_BASE, GPIO_PIN_1);
-    MAP_GPIOPadConfigSet(GPIO_PORTN_BASE, GPIO_PIN_1,
+    ROM_GPIOPinTypeGPIOOutput(GPIO_PORTN_BASE, GPIO_PIN_0);
+    MAP_GPIOPadConfigSet(GPIO_PORTN_BASE, GPIO_PIN_0,
                          GPIO_STRENGTH_12MA, GPIO_PIN_TYPE_STD);
     /* -------------------------------------------------------------------------------- */
 
-    /* Create a timer that expires every 1 second */
+    /* Create a timer that expires every 500 msecs (2 Hz) */
     xLEDEventTaskTimer = xTimerCreate("LEDEventTaskTimer",  /* Name of the timer */
-                                      100, /* timer period in ticks */
+                                      500, /* timer period in ticks */
                                       pdTRUE,  /* timer will reload itself when it expires */
                                       (void *) 1, /* timer ID */
                                       vLEDEventTaskTimerCbFunc /* timer callback function */
@@ -190,18 +196,25 @@ void vToggleLEDEventProdTask(void * pvParameters)
 
     if (xLEDEventTaskTimer != NULL)
     {
+        sprintf((char *)ui8_msg_str, "LED Event Task Timer creation successfully\r\n");
+        UARTSend(ui8_msg_str, strlen(ui8_msg_str));
+
+        SysCtlDelay(gui32_sys_clock_rate / (1000 * 3));
+
         xTimer1Start = xTimerStart(xLEDEventTaskTimer, 0);
         if ( xTimer1Start == pdFALSE )
         {
-            UARTSend("LED Event Task Timer start failed\n", 33);
+            sprintf((char *)ui8_msg_str, "LED Event Task Timer start failed\r\n");
+            UARTSend(ui8_msg_str, strlen(ui8_msg_str));
         }
     }
     else
     {
-        UARTSend("LED Event Task Timer creation failed\n", 36);
+        sprintf((char *)ui8_msg_str, "LED Event Task Timer creation failed\r\n");
+        UARTSend(ui8_msg_str, strlen(ui8_msg_str));
     }
-    /* -------------------------------------------------------------------------------- */
 
+    /* -------------------------------------------------------------------------------- */
 
     for (;;) { }
 
@@ -209,11 +222,14 @@ void vToggleLEDEventProdTask(void * pvParameters)
 
 void vLogStringEventProdTask(void * pvParameters)
 {
+    uint8_t ui8_msg_str[MSG_MAX_LEN];
+    memset(ui8_msg_str, '\0', sizeof(ui8_msg_str));
+
     /* -------------------------------------------------------------------------------- */
 
-    /* Create a timer that expires every 1 second */
+    /* Create a timer that expires every 250 msecs (4 Hz) */
     xLogStringEventTaskTimer = xTimerCreate("LogStringEventTaskTimer",  /* Name of the timer */
-                                            100, /* timer period in ticks */
+                                            250, /* timer period in ticks */
                                             pdTRUE,  /* timer will reload itself when it expires */
                                             (void *) 1, /* timer ID */
                                             vLogStringEventTaskTimerCbFunc /* timer callback function */
@@ -221,15 +237,22 @@ void vLogStringEventProdTask(void * pvParameters)
 
     if (xLogStringEventTaskTimer != NULL)
     {
-        xTimer1Start = xTimerStart(xLogStringEventTaskTimer, 0);
+        sprintf((char *)ui8_msg_str, "Log String Event Task Timer created successfully\r\n");
+        UARTSend(ui8_msg_str, strlen(ui8_msg_str));
+
+        SysCtlDelay(gui32_sys_clock_rate / (1000 * 3));
+
+        xTimer2Start = xTimerStart(xLogStringEventTaskTimer, 0);
         if ( xTimer2Start == pdFALSE )
         {
-            UARTSend("Log String Event Task Timer start failed\n", 40);
+            sprintf((char *)ui8_msg_str, "Log String Event Task Timer start failed\r\n");
+            UARTSend(ui8_msg_str, strlen(ui8_msg_str));
         }
     }
     else
     {
-        UARTSend("Log String Event Task Timer creation failed\n", 43);
+        sprintf((char *)ui8_msg_str, "Log String Event Task Timer creation failed\r\n");
+        UARTSend(ui8_msg_str, strlen(ui8_msg_str));
     }
     /* -------------------------------------------------------------------------------- */
 
@@ -260,24 +283,25 @@ void vSignalHandlerTask(void * pvParameters)
 
 void prvProcessToggleLedEvent(void)
 {
-    /* Turn on LED */
-    GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_1, GPIO_PIN_1);
+    gui32_led_status ^= 0x1;
 
-    /* Delay of 1 ms */
-    /* TODO: Change this to 2 Hz delay */
-    SysCtlDelay((gui32_sys_clock_rate / (1000 * 3))*2);
-
-    /* Turn on LED */
-    GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_1, 0);
+    /* Toggle the LED */
+    GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_0, gui32_led_status);
 }
 
 void prvProcessLogStringEvent(void)
 {
     struct qmsg x_msg_rcvd;
+    uint8_t ui8_msg_str[MSG_MAX_LEN];
 
-    xQueueReceive(xQueue, &x_msg_rcvd, (TickType_t )(1000/portTICK_PERIOD_MS));
-    //UARTSend((uint8_t *)msg_rcvd.ui8_message, msg_rcvd.ui8_message);
-    UARTSend((char *)x_msg_rcvd.ui8_message, 6);
+    if (xQueue != NULL)
+    {
+        xQueueReceive(xQueue, &x_msg_rcvd, (TickType_t )(1000/portTICK_PERIOD_MS));
+
+        strcpy((char *)ui8_msg_str, (char *)x_msg_rcvd.ui8_message);
+
+        UARTSend(ui8_msg_str, strlen(ui8_msg_str));
+    }
 }
 
 void ProcessEvents(unsigned long ul_events_to_process)
@@ -297,29 +321,16 @@ void ProcessEvents(unsigned long ul_events_to_process)
 
 void UARTSend(uint8_t *pui8_str, uint32_t ui32_str_len)
 {
-    while (ui32_str_len != 0)
+    if( xSemaphoreTake( xSemaphore, ( TickType_t ) 10 ) == pdTRUE )
     {
-        /* Write a single character to UART */
-        ROM_UARTCharPutNonBlocking(UART0_BASE, *pui8_str);
-        ui32_str_len--;
-        pui8_str++;
-    }
-}
+        while (ui32_str_len != 0)
+        {
+            /* Write a single character to UART */
+            UARTCharPut(UART0_BASE, *pui8_str);
+            ui32_str_len--;
+            pui8_str++;
+        }
 
-void UARTHandler(void)
-{
-    uint32_t ui32Status;
-
-    /* Get the interrupt status */
-    ui32Status = ROM_UARTIntStatus(UART0_BASE, true);
-
-    /* Clear the asserted interrupts */
-    ROM_UARTIntClear(UART0_BASE, ui32Status);
-
-    /* Loop while there are characters in the receive FIFO */
-    while(ROM_UARTCharsAvail(UART0_BASE))
-    {
-        /* Read the next character from the UART and write it back to the UART */
-        UARTCharPut(UART0_BASE, ROM_UARTCharGetNonBlocking(UART0_BASE));
+        xSemaphoreGive( xSemaphore );
     }
 }

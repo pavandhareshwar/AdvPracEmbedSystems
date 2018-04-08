@@ -24,23 +24,30 @@
 #include "task.h"
 #include "queue.h"
 #include "timers.h"
+#include "semphr.h"
 
 #include "main.h"
 
 xTimerHandle xLED2HzTaskTimer, xLED4HzTaskTimer;
 BaseType_t xTimer1Start, xTimer2Start;
+SemaphoreHandle_t xSemaphore;
 
 uint32_t led1_status = 0;
 uint32_t led2_status = 0;
 
 void UARTSend(uint8_t *pui8_str, uint32_t ui32_str_len)
 {
-    while (ui32_str_len != 0)
+    if( xSemaphoreTake( xSemaphore, ( TickType_t ) 10 ) == pdTRUE )
     {
-        /* Write a single character to UART */
-        UARTCharPut(UART0_BASE, *pui8_str);
-        ui32_str_len--;
-        pui8_str++;
+        while (ui32_str_len != 0)
+        {
+            /* Write a single character to UART */
+            UARTCharPut(UART0_BASE, *pui8_str);
+            ui32_str_len--;
+            pui8_str++;
+        }
+
+        xSemaphoreGive( xSemaphore );
     }
 }
 
@@ -61,10 +68,10 @@ void vLED4HzTimerCallbackFunc(TimerHandle_t xTimer)
 
 void xUsrLED2HzTask(void * pvParameters)
 {
-    /* Create a timer that expires every 1 second */
     uint8_t ui8_msg_str[128];
     memset((char *)ui8_msg_str, '\0', sizeof(ui8_msg_str));
 
+    /* Create a timer that expires every 500 msecs (2 Hz) */
     xLED2HzTaskTimer = xTimerCreate("LED2HzTimer",  /* Name of the timer */
                            500, /* timer period in ticks */
                            pdTRUE,  /* timer will reload itself when it expires */
@@ -110,9 +117,9 @@ void xUsrLED4HzTask(void * pvParameters)
     uint8_t ui8_msg_str[128];
     memset((char *)ui8_msg_str, '\0', sizeof(ui8_msg_str));
 
-    /* Create a timer that expires every 2 second */
+    /* Create a timer that expires every 250 msecs (4 Hz) */
     xLED4HzTaskTimer = xTimerCreate("LED4HzTimer",  /* Name of the timer */
-                                    1000, /* timer period in ticks */
+                                    250, /* timer period in ticks */
                                     pdTRUE,  /* timer will reload itself when it expires */
                                     (void *) 1, /* timer ID */
                                     vLED4HzTimerCallbackFunc /* timer callback function */
@@ -166,6 +173,9 @@ void UART_Init(void)
     ROM_UARTConfigSetExpClk(UART0_BASE, gui32_sys_clock_rate, 115200,
                             (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
                                     UART_CONFIG_PAR_NONE));
+
+    /* Create a mutex for UART */
+    xSemaphore = xSemaphoreCreateMutex();
 }
 
 int main(void)

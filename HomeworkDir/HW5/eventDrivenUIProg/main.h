@@ -15,7 +15,10 @@
 #define TOGGLE_LED      ( 1UL << 0UL )
 #define LOG_STRING      ( 1UL << 1UL )
 
+#define MSG_MAX_LEN     128
+
 uint32_t gui32_sys_clock_rate;
+uint32_t gui32_led_status;
 
 #define SYSTEM_CLOCK    120000000U
 
@@ -154,16 +157,5 @@ void ProcessEvents(unsigned long ul_events_to_process);
  *  @return void
 */
 void UARTSend(uint8_t *pui8_str, uint32_t ui32_str_len);
-
-/**
- *  @brief UART Handler
- *
- *  This function will serve as an interrupt hanlder for UART Tx and Rx
- *
- *  @param  void
- *
- *  @return void
-*/
-void UARTHandler(void);
 
 #endif /* MAIN_H_ */

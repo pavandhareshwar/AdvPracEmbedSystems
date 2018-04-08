@@ -37,6 +37,7 @@ main.obj: /Users/pavandhareshwar/workspace_v8/freeRTOSTest3Tasks/FreeRTOS/includ
 main.obj: /Users/pavandhareshwar/workspace_v8/freeRTOSTest3Tasks/FreeRTOS/include/list.h
 main.obj: /Users/pavandhareshwar/workspace_v8/freeRTOSTest3Tasks/FreeRTOS/include/queue.h
 main.obj: /Users/pavandhareshwar/workspace_v8/freeRTOSTest3Tasks/FreeRTOS/include/timers.h
+main.obj: /Users/pavandhareshwar/workspace_v8/freeRTOSTest3Tasks/FreeRTOS/include/semphr.h
 
 ../main.c: 
 /Users/pavandhareshwar/CCS/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdio.h: 
@@ -75,3 +76,4 @@ main.obj: /Users/pavandhareshwar/workspace_v8/freeRTOSTest3Tasks/FreeRTOS/includ
 /Users/pavandhareshwar/workspace_v8/freeRTOSTest3Tasks/FreeRTOS/include/list.h: 
 /Users/pavandhareshwar/workspace_v8/freeRTOSTest3Tasks/FreeRTOS/include/queue.h: 
 /Users/pavandhareshwar/workspace_v8/freeRTOSTest3Tasks/FreeRTOS/include/timers.h: 
+/Users/pavandhareshwar/workspace_v8/freeRTOSTest3Tasks/FreeRTOS/include/semphr.h: 

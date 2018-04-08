@@ -47,7 +47,7 @@ int main() {
     /* Configure UART to print a string to the terminal saying:
      *          "Project for <Name> <Date>" */
 
-    uint8_t ui8_str_to_print[] = "\rProject for Pavan Dhareshwar (04/04/2018)\r\n";
+    uint8_t ui8_str_to_print[] = "\rProject for Pavan Dhareshwar (04/08/2018)\r\n";
 
     /* Initialize the UART */
     UART_Init();
@@ -59,7 +59,7 @@ int main() {
     while (!gb_uart_data_rcvd)
     {
         /* Delay of 10 ms */
-        SysCtlDelay(gui32_sys_clock_rate / (100 * 3));
+        SysCtlDelay(gui32_sys_clock_rate / (10 * 3));
     }
 
     /* ---------------------------------------------------------------------------------------------------------- */
@@ -118,18 +118,18 @@ void UARTSend(uint8_t *pui8_str, uint32_t ui32_str_len)
 
 void BlinkUserLED(void)
 {
-    uint32_t ui32_count = 100;
+    //uint32_t ui32_count = 100;
     static uint32_t ui32_blink_count = 0;
     uint8_t ui8_blink_count_msg[64];
 
-    while (ui32_count--)
+    //while (ui32_count--)
+    while(1)
     {
         /* Turn on LED */
         GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_1, GPIO_PIN_1);
 
-        /* Delay of 1 ms */
-        /* TODO: Change this to 2 Hz delay */
-        SysCtlDelay(gui32_sys_clock_rate / (1000 * 3));
+        /* Delay of 500 ms (2Hz rate) */
+        SysCtlDelay(gui32_sys_clock_rate / (2 * 3));
 
         /* Turn on LED */
         GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_1, 0);
