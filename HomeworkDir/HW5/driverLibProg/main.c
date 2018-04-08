@@ -1,3 +1,19 @@
+/******************************************************************************
+* Author: Pavan Dhareshwar
+* Date: 4/4/2018
+* File: main.c
+* Description:  This program uses the Tivaware driver library to do
+*               the following operations:
+*               1. Configure your System clock to be at the max (120MHz)
+*               2. Configure UART to print a string to a terminal saying:
+*                   “Project for: <ENTER_NAME_HERE> <DATE> ”
+*               3. Configure GPIO to blink the USER LED D1 at a 2 hz Rate
+*                   using the system control library delay function
+*               4. During each LED blink, print a count that increments
+*                   for every blink using UART
+*
+******************************************************************************/
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>

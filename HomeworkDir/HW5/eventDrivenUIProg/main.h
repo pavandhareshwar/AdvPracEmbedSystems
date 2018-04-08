@@ -1,9 +1,12 @@
-/*
- * main.h
- *
- *  Created on: Apr 4, 2018
- *      Author: pavandhareshwar
- */
+/******************************************************************************
+* Author: Pavan Dhareshwar
+* Date: 3/6/2018
+* File: main.h
+* Description:  This file serves as a header file containing the macros,
+*               globals, structures/enumerations and function prototypes
+*               for main.c file.
+*
+******************************************************************************/
 
 #ifndef MAIN_H_
 #define MAIN_H_

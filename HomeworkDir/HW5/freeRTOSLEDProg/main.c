@@ -1,3 +1,11 @@
+/******************************************************************************
+* Author: Pavan Dhareshwar
+* Date: 4/6/2018
+* File: main.c
+* Description:  This program uses FreeRTOS with drivelib library to blink two
+*               USER LEDs at two different rates(Task1 = 2 Hz and Task2 = 4 Hz)
+*
+******************************************************************************/
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>

@@ -1,3 +1,15 @@
+/******************************************************************************
+* Author: Pavan Dhareshwar
+* Date: 4/6/2018
+* File: main.c
+* Description:  This file defines the event driven UI functionality using two
+*               tasks signalling a third new task that controls LED and UART.
+*               The two tasks will notify the third task via task notifications,
+*               which will be handled by the third task to either toggle an LED
+*               or print a string using UART.
+*
+******************************************************************************/
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
